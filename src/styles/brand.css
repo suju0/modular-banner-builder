@@ -1,0 +1,42 @@
+/* 브랜드 교체 레이어 — Montage 구조 위에 컬리 퍼플을 얹는다
+   ────────────────────────────────────────────────────────────────
+   montage.css 는 WDS 를 그대로 옮긴 거울이라 손대지 않는다. 브랜드 색만
+   바꾸고 싶을 때 건드리는 곳은 이 파일 하나다.
+
+   디자인 시스템에서 "브랜드를 바꾼다"는 건 토큰 이름을 바꾸는 게 아니라
+   **primary ramp 의 값만 갈아 끼우는 것**이다. 그래서 여기서는
+   --semantic-primary-* 와 --semantic-line-primary-* 의 값만 다시 정의하고,
+   그 토큰을 쓰던 컴포넌트는 한 줄도 고치지 않는다.
+
+   ramp 는 WDS blue ramp 와 같은 관계로 만들었다.
+   blue 는 50(normal) 기준으로 45 = L×0.92, 40 = L×0.82, 95 = 아주 옅은 틴트다.
+   컬리 퍼플 #5F0080 = hsl(284.5, 100%, 25.1%) 에 같은 비율을 적용한 값이다. */
+
+:root {
+  /* ── 컬리 퍼플 ramp (atomic 자리) ──────────────────────────── */
+  --brand-purple-40: #4E0069; /* heavy  — L×0.82 */
+  --brand-purple-45: #570075; /* strong — L×0.92 */
+  --brand-purple-50: #5F0080; /* normal — 컬리 브랜드 원색 */
+  --brand-purple-60: #72009A; /* 어두운 바탕 위에서 쓰는 밝은 쪽 */
+  --brand-purple-95: #F9EAFE; /* 선택 상태의 옅은 바탕 (blue-95 대응) */
+  --brand-purple-50-rgb: 95, 0, 128;
+
+  /* 브랜드 마크(컬리 워드마크) 색 — 로고는 UI 색이 아니라 브랜드 자산이지만,
+     지금은 primary 와 같은 색이라 한 곳에서 같이 관리한다 */
+  --color-brand: var(--brand-purple-50);
+
+  /* ── semantic primary 재정의 ───────────────────────────────
+     이름은 WDS 그대로, 값만 컬리 퍼플. 이 네 줄이 화면의 모든
+     포인트 컬러(버튼·선택·토글·포커스·가이드선)를 바꾼다. */
+  --semantic-primary-normal: var(--brand-purple-50);
+  --semantic-primary-strong: var(--brand-purple-45);
+  --semantic-primary-heavy: var(--brand-purple-40);
+  --semantic-primary-normal-rgb: var(--brand-purple-50-rgb);
+
+  /* primary 계열 알파 선 — blue 의 47(28%) / 6E(43%) 농도를 그대로 */
+  --semantic-line-primary-normal: #5F008047;
+  --semantic-line-primary-strong: #5F00806E;
+
+  /* 어두운 면 위의 primary */
+  --semantic-inverse-primary: var(--brand-purple-60);
+}

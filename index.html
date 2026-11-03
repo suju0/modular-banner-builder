@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>모듈러 배너 빌더 — Montage</title>
+    <link rel="icon" type="image/svg+xml" href="/src/assets/favicon.svg" />
+    <!-- Pretendard 는 CDN 이 아니라 번들에 담아 같은 출처로 서빙한다 (globals.css @font-face).
+         · Export(html-to-image)가 @font-face 규칙을 SecurityError 없이 직접 읽는다
+         · 배너 좌표는 이 폰트 메트릭 기준이라 CDN 장애로 폴백되면 결과가 달라진다
+         · 아티팩트로 배포할 때 외부 스타일시트는 CSP 에 막힌다 -->
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

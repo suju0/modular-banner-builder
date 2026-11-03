@@ -1,0 +1,250 @@
+/* Montage 토큰 레이어 — @import 는 @font-face 보다 먼저 와야 한다(CSS 규칙).
+   아래 --color-* 별칭이 전부 여기 토큰을 가리킨다.
+   brand.css 가 뒤에 와야 primary ramp 를 덮어쓸 수 있다 (순서가 곧 우선순위). */
+@import './montage.css';
+@import './brand.css';
+
+/* Pretendard Variable — 번들 동봉 (SIL Open Font License 1.1)
+   https://github.com/orioncactus/pretendard
+   배너 타이포 수치(86px / 자간 -5% 등)가 이 폰트 메트릭 기준이라
+   CDN 에 의존하지 않고 같은 출처에서 서빙한다.
+
+   format 은 반드시 woff2 로 적는다 (woff2-variations 아님).
+   html-to-image 의 preferredFontFormat 이 format() 문자열을 **정확히 비교**해서,
+   다르면 src 선언 전체를 지워 버린다 → Export 가 조용히 폴백 폰트로 렌더된다.
+   가변 축(font-weight: 45 920)은 format 표기와 무관하게 그대로 동작한다.
+
+   Montage(WDS) 도 Pretendard Variable 을 1순위로 쓴다 — 폰트는 바꿀 것이 없다. */
+@font-face {
+  font-family: 'Pretendard Variable';
+  font-weight: 45 920;
+  font-style: normal;
+  font-display: swap;
+  src: url('../assets/fonts/PretendardVariable.woff2') format('woff2');
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* ────────────────────────────────────────────────────────────
+     앱 별칭 → Montage semantic 토큰
+     컴포넌트는 예전처럼 --color-* 만 쓴다. 바뀐 것은 이 매핑뿐이다.
+     값을 여기에 직접 적지 않는다 — 반드시 montage.css 의 토큰을 가리킨다.
+     ──────────────────────────────────────────────────────────── */
+
+  /* 포인트 컬러 — 컬리 퍼플 #5F0080 (brand.css 가 primary ramp 를 이 색으로 덮는다).
+     흰 바탕 위 대비가 11.7:1 이라 채움·선·글자를 한 색으로 쓸 수 있다.
+     퍼플 #8B5CF6 때처럼 "글자용 진한 보라"를 따로 둘 이유가 없어졌다. */
+  --color-primary: var(--semantic-primary-normal);
+  --color-primary-light: var(--brand-purple-95);
+  --color-primary-hover: var(--semantic-primary-strong);
+  --color-primary-text: var(--semantic-primary-normal);
+  --color-on-primary: var(--semantic-static-white);
+  --color-primary-line: var(--semantic-line-primary-normal);
+
+  /* 면 — 회색 박스는 원본 빌더(5173)의 팔레트를 쓴다.
+     Montage 의 fill(#70737C14)은 흰 바탕에서 ≈#F4F4F5 로 떨어져 원본(#F7F7F9)보다
+     세 톤쯤 진하다. 패널에 회색 박스가 많은 화면이라 그 차이가 "탁하다"로 읽혀서,
+     면 계열만 원본 값으로 되돌렸다. 카드·선·그림자는 Montage 그대로다. */
+  --color-surface: var(--legacy-gray-surface);
+  --color-fill: var(--legacy-gray-surface);
+  --color-fill-strong: var(--semantic-fill-strong);
+  --color-card: var(--semantic-background-normal-normal);
+
+  /* 토글 꺼진 트랙만 회색 한 칸을 따로 쓴다.
+     세그먼트 트랙과 같은 #F7F7F9 면 흰 카드 위 대비가 1.02:1 이라 윤곽이 사라지고,
+     fill-strong(≈#E8E9EA, 1.22:1)은 꺼진 상태 치고 무겁다.
+     그 사이의 Montage fill(≈#F4F4F5, 1.10:1)이 "있는 건 보이되 조용한" 지점이다. */
+  --color-toggle-off: var(--semantic-fill-normal);
+
+  /* 선 — solid 는 불투명 선, line-normal-* 는 겹쳐도 톤이 안 튀는 알파 선 */
+  --color-border: var(--semantic-line-solid-neutral);
+  --color-border-strong: var(--semantic-line-solid-normal);
+  --color-border-alpha: var(--semantic-line-normal-neutral);
+
+  /* 글자 — DS 의 label 램프를 그대로 쓴다 */
+  --color-text-primary: var(--semantic-label-normal);
+  --color-text-secondary: var(--semantic-label-neutral);
+  --color-text-muted: var(--semantic-label-alternative);
+  --color-text-assistive: var(--semantic-label-assistive);
+  --color-text-disable: var(--semantic-label-disable);
+
+  /* 상태 */
+  --color-success: var(--semantic-status-positive);
+  --color-success-text: var(--semantic-accent-foreground-green);
+  --color-success-bg: var(--semantic-background-status-positive);
+  --color-warning: var(--semantic-status-cautionary);
+  --color-warning-text: var(--semantic-accent-foreground-orange);
+  --color-warning-bg: var(--semantic-background-status-cautionary);
+  --color-danger: var(--semantic-status-negative);
+  --color-danger-text: var(--semantic-accent-foreground-red);
+  --color-danger-bg: var(--semantic-background-status-negative);
+
+  --color-tag-bg: var(--legacy-gray-tag);
+  --color-inactive: var(--semantic-interaction-inactive);
+  --color-disable-bg: var(--semantic-interaction-disable);
+  --color-dimmer: var(--semantic-material-dimmer);
+
+  /* 그림자 — DS elevation 5단에서 쓰임새에 맞춰 고른다 */
+  --shadow-card: var(--semantic-elevation-shadow-normal-xsmall);
+  --shadow-raised: var(--semantic-elevation-shadow-normal-small);
+  --shadow-preview: var(--semantic-elevation-shadow-normal-medium);
+  --shadow-pop: var(--semantic-elevation-shadow-normal-large);
+  --shadow-toast: var(--semantic-elevation-shadow-normal-large);
+
+  /* 글꼴 — DS body/textarea/input 과 같은 스택 */
+  --font-family:
+    'Pretendard Variable', 'Pretendard JP Variable', Pretendard, 'Pretendard JP',
+    -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue',
+    'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic',
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+
+  /* ── 원본 빌더(5173)의 회색 팔레트 ───────────────────────────
+     Montage 의 회색은 알파를 얹는 쿨그레이(#70737C 계열)라 한 톤 진하다.
+     원본 쪽이 연하고 가벼워 그 값을 그대로 쓴다. 이름을 달아 두는 이유는
+     "DS 를 안 따른 실수"로 보고 되돌리는 일을 막기 위해서다.
+     이 네 개 말고 새 회색을 즉흥적으로 만들지 말 것. */
+  --legacy-gray-surface: #F7F7F9; /* 페이지 면 · 입력칸 · 세그먼트 트랙 · 토글 · 회색 박스 */
+  --legacy-gray-tag: #F1F1F4;     /* 히스토리 태그 배경 */
+  --legacy-upload-bg: #FAFAFB;    /* 배경 카드 이미지 업로드 박스의 면 */
+
+  /* 레이아웃 규격 — spacing 스케일의 배수로만 잡는다 */
+  --header-height: 64px;   /* spacing-64 */
+  --sidebar-width: 320px;  /* spacing-80 × 4 */
+  --history-height: 192px; /* spacing-64 × 3 */
+  --panel-gutter: 20px;    /* 패널 안쪽 여백 — DS 카드 패딩(14/20)의 큰 쪽 */
+}
+
+html, body, #root {
+  height: 100%;
+  font-family: var(--font-family);
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 본문 기본 타이포 — DS label1(14/20). 자간은 variant 마다 다르므로
+   전역에서 -0.01em 같은 값을 걸지 않는다. .ty-* 가 자기 자간을 가져간다. */
+body {
+  font-size: var(--font-label1-size);
+  line-height: var(--font-label1-line);
+  letter-spacing: var(--font-label1-ls);
+}
+
+input, textarea, button, select {
+  font-family: inherit;
+  color: inherit;
+}
+
+/* 포커스 — DS 는 primary 계열 선으로 알린다 */
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--semantic-line-primary-strong);
+}
+
+:focus-visible {
+  outline: 2px solid var(--semantic-line-primary-strong);
+  outline-offset: 2px;
+}
+
+button {
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+/* 슬라이더 — Slider 컴포넌트의 트랙/썸 규격(트랙 4px, 썸 원형 + 그림자)을 따른다 */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: var(--radius-full);
+  background: var(--color-fill-strong);
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--semantic-static-white);
+  border: 2px solid var(--color-primary);
+  box-shadow: var(--shadow-raised);
+  cursor: pointer;
+}
+
+/* Scrollbar — 면 색이 아니라 fill 토큰으로 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--semantic-fill-strong);
+  border-radius: var(--radius-full);
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--semantic-interaction-inactive);
+  background-clip: content-box;
+}
+
+/* 스크롤하는 동안에만 보이는 스크롤바 (lib/autoHideScrollbar.js 가 data-scrolling 을 단다).
+   폭은 늘 차지한 채 색만 바꾼다 — 폭까지 접으면 보일 때마다 내용이 8px 씩 밀린다.
+   나타날 때는 바로, 사라질 때는 잠깐 머물렀다 천천히. */
+[data-autohide-scroll]::-webkit-scrollbar-thumb {
+  background: transparent;
+  transition: background-color 0.45s ease 0.15s;
+}
+[data-autohide-scroll][data-scrolling]::-webkit-scrollbar-thumb {
+  background: var(--semantic-fill-strong);
+  background-clip: content-box;
+  transition: background-color 0.1s ease;
+}
+[data-autohide-scroll][data-scrolling]::-webkit-scrollbar-thumb:hover {
+  background: var(--semantic-interaction-inactive);
+  background-clip: content-box;
+}
+
+/* 투명 배경 확인용 체커 — 배경을 지정하지 않았을 때만 쓴다.
+   배너 출력이 아니라 편집 보조 표시라 DS 의 line-solid 톤으로 맞춘다. */
+.preview-checker {
+  background-image:
+    linear-gradient(45deg, var(--semantic-line-solid-alternative) 25%, transparent 25%),
+    linear-gradient(-45deg, var(--semantic-line-solid-alternative) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--semantic-line-solid-alternative) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--semantic-line-solid-alternative) 75%);
+  background-size: 16px 16px;
+  background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
+}
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(-8px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* 디자인 패널이 라운드 카드가 되면서, 마지막 섹션의 구분선이 카드 아래 모서리와
+   겹쳐 보인다. 섹션 사이를 나누는 선이지 카드를 닫는 선이 아니므로 지운다. */
+aside > section:last-of-type {
+  border-bottom: none;
+}
+
+/* 입력 유도 문구 — label 램프의 assistive */
+input::placeholder, textarea::placeholder {
+  color: var(--color-text-assistive);
+  opacity: 1;
+}

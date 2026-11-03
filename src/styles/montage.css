@@ -1,0 +1,195 @@
+/* Montage (Wanted Design System, @wanteddev/wds@3.11.0) 토큰 레이어
+   ────────────────────────────────────────────────────────────────
+   원본: C:\Users\user\Desktop\Montage\montage-web-main\ds-bundle\_ds_bundle.css
+   이름도 값도 업스트림 그대로 둔다. 앱 쪽 별칭(--color-*)은 globals.css 에서
+   여기 토큰을 가리키게만 한다. 이 파일은 WDS 의 거울이라 직접 고치지 않는다.
+   — 라이트 테마만 싣는다. 이 빌더는 다크 모드를 쓰지 않는다.
+   — 브랜드 색(primary ramp)은 뒤에 오는 brand.css 가 덮어쓴다. 포인트 컬러를
+     바꿀 일이 생기면 여기가 아니라 brand.css 를 고친다. */
+
+:root {
+  /* ── atomic: blue (primary 계열의 원천) ───────────────────── */
+  --atomic-blue-40: #0054D1;
+  --atomic-blue-45: #005EEB;
+  --atomic-blue-50: #0066FF;
+  --atomic-blue-60: #3385FF;
+  --atomic-blue-80: #9EC5FF;
+  --atomic-blue-90: #C9DEFE;
+  --atomic-blue-95: #EAF2FE;
+  --atomic-blue-99: #F7FBFF;
+
+  /* ── atomic: coolNeutral (면·선·레이블의 원천) ─────────────── */
+  --atomic-coolNeutral-10: #171719;
+  --atomic-coolNeutral-22: #2E2F33;
+  --atomic-coolNeutral-25: #37383C;
+  --atomic-coolNeutral-50: #70737C;
+  --atomic-coolNeutral-70: #989BA2;
+  --atomic-coolNeutral-90: #C2C4C8;
+  --atomic-coolNeutral-95: #DBDCDF;
+  --atomic-coolNeutral-96: #E1E2E4;
+  --atomic-coolNeutral-97: #EAEBEC;
+  --atomic-coolNeutral-98: #F4F4F5;
+  --atomic-coolNeutral-99: #F7F7F8;
+
+  /* ── semantic: static ─────────────────────────────────────── */
+  --semantic-static-white: #ffffff;
+  --semantic-static-black: #000000;
+
+  /* *-rgb 짝 — DS 가 알파를 직접 얹을 자리에 쓰라고 함께 내보내는 값이다.
+     rgba(var(--…-rgb), 0.4) 처럼 쓰면 색은 토큰 하나에서만 온다. */
+  --semantic-static-white-rgb: 255, 255, 255;
+  --semantic-static-black-rgb: 0, 0, 0;
+  --semantic-primary-normal-rgb: 0, 102, 255;
+  --semantic-label-normal-rgb: 23, 23, 25;
+
+  /* ── semantic: primary ────────────────────────────────────── */
+  --semantic-primary-normal: #0066FF;
+  --semantic-primary-strong: #005EEB;
+  --semantic-primary-heavy: #0054D1;
+
+  /* ── semantic: label (텍스트) ──────────────────────────────
+     normal → neutral → alternative → assistive → disable 순으로 옅어진다.
+     alternative 이하는 알파값이라 어떤 바탕 위에서도 톤이 맞는다. */
+  --semantic-label-normal: #171719;
+  --semantic-label-strong: #000000;
+  --semantic-label-neutral: #2E2F33E0;
+  --semantic-label-alternative: #37383C9C;
+  --semantic-label-assistive: #37383C47;
+  --semantic-label-disable: #37383C29;
+
+  /* ── semantic: background (페이지·카드 면) ─────────────────── */
+  --semantic-background-normal-normal: #ffffff;
+  --semantic-background-normal-alternative: #F7F7F8;
+  --semantic-background-elevated-normal: #ffffff;
+  --semantic-background-elevated-alternative: #F7F7F8;
+  --semantic-background-status-negative: #FF424214;
+  --semantic-background-status-cautionary: #FF920014;
+  --semantic-background-status-positive: #00BF4014;
+
+  /* ── semantic: interaction ────────────────────────────────── */
+  --semantic-interaction-inactive: #989BA2;
+  --semantic-interaction-disable: #F4F4F5;
+
+  /* ── semantic: line (테두리·구분선) ────────────────────────
+     normal-* 은 알파 선(겹쳐도 톤이 안 튄다), solid-* 은 불투명 선. */
+  --semantic-line-normal-normal: #70737C38;
+  --semantic-line-normal-neutral: #70737C29;
+  --semantic-line-normal-alternative: #70737C14;
+  --semantic-line-solid-normal: #E1E2E4;
+  --semantic-line-solid-neutral: #EAEBEC;
+  --semantic-line-solid-alternative: #F4F4F5;
+  --semantic-line-primary-normal: #0066FF47;
+  --semantic-line-primary-strong: #0066FF6E;
+  --semantic-line-status-negative-normal: #FF42426E;
+  --semantic-line-status-cautionary-normal: #FF92006E;
+  --semantic-line-status-positive-normal: #00BF406E;
+
+  /* ── semantic: status ─────────────────────────────────────── */
+  --semantic-status-positive: #00BF40;
+  --semantic-status-cautionary: #FF9200;
+  --semantic-status-negative: #FF4242;
+
+  /* ── semantic: accent foreground (바탕 위 글자용 보정색) ───── */
+  --semantic-accent-foreground-blue: #005EEB;
+  --semantic-accent-foreground-green: #009632;
+  --semantic-accent-foreground-orange: #D17600;
+  --semantic-accent-foreground-red: #E52222;
+  --semantic-accent-foreground-violet: #5B37ED;
+
+  /* ── semantic: fill (테두리 없이 면으로만 구분하는 영역) ───── */
+  --semantic-fill-normal: #70737C14;
+  --semantic-fill-strong: #70737C29;
+  --semantic-fill-alternative: #70737C0D;
+
+  /* ── semantic: inverse / material ─────────────────────────── */
+  --semantic-inverse-primary: #3385FF;
+  --semantic-inverse-background: #1B1C1E;
+  --semantic-inverse-label: #F7F7F8;
+  --semantic-material-dimmer: #17171985;
+
+  /* ── semantic: elevation (그림자) ─────────────────────────── */
+  --semantic-elevation-shadow-normal-xsmall: 0px 1px 2px -1px #1717171A;
+  --semantic-elevation-shadow-normal-small: 0px 2px 4px -2px #1717170F, 0px 4px 6px -1px #1717170F;
+  --semantic-elevation-shadow-normal-medium: 0px 4px 6px -2px #17171712, 0px 10px 15px -3px #17171712;
+  --semantic-elevation-shadow-normal-large: 0px 6px 10px -4px #17171714, 0px 16px 24px -6px #17171714;
+  --semantic-elevation-shadow-normal-xlarge: 0px 10px 15px -5px #1717171A, 0px 24px 38px -10px #1717171F;
+  --semantic-elevation-shadow-spread-medium: 0px 15px 75px 0px #17171729;
+
+  /* ── spacing scale (packages/wds-theme/src/theme/spacing) ───
+     4 의 배수를 기본으로, 6·10·14 만 예외로 둔 스케일.
+     여기 없는 값(예: 18px, 22px)은 쓰지 않는다. */
+  --spacing-2: 2px;
+  --spacing-4: 4px;
+  --spacing-6: 6px;
+  --spacing-8: 8px;
+  --spacing-10: 10px;
+  --spacing-12: 12px;
+  --spacing-14: 14px;
+  --spacing-16: 16px;
+  --spacing-20: 20px;
+  --spacing-24: 24px;
+  --spacing-32: 32px;
+  --spacing-40: 40px;
+  --spacing-48: 48px;
+  --spacing-56: 56px;
+  --spacing-64: 64px;
+  --spacing-72: 72px;
+  --spacing-80: 80px;
+
+  /* ── radius (컴포넌트 style.ts 에서 실제로 쓰는 값만) ───────
+     Chip xs 6 / sm·md 8 / lg 10 · Button sm 8 / md 10 / lg 12
+     TextField·Select·Card 12 · SegmentedControl 8·10·12 · Checkbox 5 */
+  --radius-checkbox: 5px;
+  --radius-xs: 6px;
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 1000px;
+
+  /* ── control height (Button·SegmentedControl·TextField 3단) ── */
+  --control-height-sm: 32px;
+  --control-height-md: 40px;
+  --control-height-lg: 48px;
+
+  /* ── typography (packages/wds/src/components/typography/style.ts)
+     rem 을 px 로 옮겨 적는다. 이 앱은 루트 폰트 크기를 건드리지 않는다. */
+  --font-display2-size: 40px;   --font-display2-line: 52px;   --font-display2-ls: -0.0282em;
+  --font-title2-size: 28px;     --font-title2-line: 38px;     --font-title2-ls: -0.0236em;
+  --font-title3-size: 24px;     --font-title3-line: 32px;     --font-title3-ls: -0.023em;
+  --font-heading1-size: 22px;   --font-heading1-line: 30px;   --font-heading1-ls: -0.0194em;
+  --font-heading2-size: 20px;   --font-heading2-line: 28px;   --font-heading2-ls: -0.012em;
+  --font-headline1-size: 18px;  --font-headline1-line: 26px;  --font-headline1-ls: -0.002em;
+  --font-headline2-size: 17px;  --font-headline2-line: 24px;  --font-headline2-ls: 0em;
+  --font-body1-size: 16px;      --font-body1-line: 24px;      --font-body1-ls: 0.0057em;
+  --font-body2-size: 15px;      --font-body2-line: 22px;      --font-body2-ls: 0.0096em;
+  --font-label1-size: 14px;     --font-label1-line: 20px;     --font-label1-ls: 0.0145em;
+  --font-label2-size: 13px;     --font-label2-line: 18px;     --font-label2-ls: 0.0194em;
+  --font-caption1-size: 12px;   --font-caption1-line: 16px;   --font-caption1-ls: 0.0252em;
+  --font-caption2-size: 11px;   --font-caption2-line: 14px;   --font-caption2-ls: 0.0311em;
+
+  /* weight — DS 는 400/500/600 만 쓴다(bold 는 display·title 계열에서만 700) */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 600;
+  --font-weight-display-bold: 700;
+}
+
+/* ── typography 유틸 ─────────────────────────────────────────
+   인라인 스타일에서 size/line/letter-spacing 셋을 매번 적는 대신
+   className 하나로 variant 를 건다. DS 의 <Typography variant> 와 1:1. */
+.ty-title3    { font-size: var(--font-title3-size);    line-height: var(--font-title3-line);    letter-spacing: var(--font-title3-ls); }
+.ty-heading1  { font-size: var(--font-heading1-size);  line-height: var(--font-heading1-line);  letter-spacing: var(--font-heading1-ls); }
+.ty-heading2  { font-size: var(--font-heading2-size);  line-height: var(--font-heading2-line);  letter-spacing: var(--font-heading2-ls); }
+.ty-headline1 { font-size: var(--font-headline1-size); line-height: var(--font-headline1-line); letter-spacing: var(--font-headline1-ls); }
+.ty-headline2 { font-size: var(--font-headline2-size); line-height: var(--font-headline2-line); letter-spacing: var(--font-headline2-ls); }
+.ty-body1     { font-size: var(--font-body1-size);     line-height: var(--font-body1-line);     letter-spacing: var(--font-body1-ls); }
+.ty-body2     { font-size: var(--font-body2-size);     line-height: var(--font-body2-line);     letter-spacing: var(--font-body2-ls); }
+.ty-label1    { font-size: var(--font-label1-size);    line-height: var(--font-label1-line);    letter-spacing: var(--font-label1-ls); }
+.ty-label2    { font-size: var(--font-label2-size);    line-height: var(--font-label2-line);    letter-spacing: var(--font-label2-ls); }
+.ty-caption1  { font-size: var(--font-caption1-size);  line-height: var(--font-caption1-line);  letter-spacing: var(--font-caption1-ls); }
+.ty-caption2  { font-size: var(--font-caption2-size);  line-height: var(--font-caption2-line);  letter-spacing: var(--font-caption2-ls); }
+
+.ty-regular { font-weight: var(--font-weight-regular); }
+.ty-medium  { font-weight: var(--font-weight-medium); }
+.ty-bold    { font-weight: var(--font-weight-bold); }
