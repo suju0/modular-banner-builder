@@ -72,23 +72,25 @@ export default function SlotRenderer({
     }
 
     case "title": {
-      // 레퍼런스 구성: 윗줄은 Regular, 아랫줄은 Bold — 크기는 같고 두께만 다르다
-      const longest = Math.max((content.title || "").length, (content.titleLead || "").length);
-      const common = {
-        fontSize: getTitleSize(bannerSize, longest) * scale,
-        color: theme.text,
-        lineHeight: LINE_HEIGHT.title,
-        letterSpacing: `${LETTER_SPACING.title}em`,
-        wordBreak: "keep-all",
-        whiteSpace: "pre-wrap",
-      };
+      // 입력은 한 칸이고 Enter 로 줄을 나눈다. **줄마다 두께를 달리하지 않는다** —
+      // 굵기 대비는 타이틀과 서브 타이틀 사이에서만 준다.
+      const lines = (content.title || "").split("\n");
+      // 크기는 가장 긴 "줄" 기준이다 — 전체 길이로 재면 줄바꿈한 타이틀이 과하게 작아진다
+      const longest = Math.max(0, ...lines.map((l) => l.length));
 
       return (
-        <div>
-          {content.titleLead ? (
-            <div style={{ ...common, fontWeight: weights.titleLead }}>{content.titleLead}</div>
-          ) : null}
-          <div style={{ ...common, fontWeight: weights.title }}>{content.title}</div>
+        <div
+          style={{
+            fontSize: getTitleSize(bannerSize, longest) * scale,
+            fontWeight: weights.title,
+            color: theme.text,
+            lineHeight: LINE_HEIGHT.title,
+            letterSpacing: `${LETTER_SPACING.title}em`,
+            wordBreak: "keep-all",
+            whiteSpace: "pre-wrap",
+          }}
+        >
+          {content.title}
         </div>
       );
     }

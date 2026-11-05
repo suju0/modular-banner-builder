@@ -28,7 +28,7 @@ export const THEMES = [
 export const COLOR_ROLES = [
   { key: "bg", label: "배경", desc: "배너 바탕색 (지정 안 하면 투명)", allowNone: true },
   { key: "text", label: "타이틀", desc: "메인 타이틀 텍스트" },
-  { key: "sub", label: "서브 텍스트", desc: "서브 카피 · 기간" },
+  { key: "sub", label: "서브 텍스트", desc: "서브 타이틀 · 기간" },
   { key: "accent", label: "강조", desc: "할인 뱃지 텍스트" },
   { key: "badge", label: "태그 배경", desc: "이벤트 태그 바탕" },
   { key: "badgeText", label: "태그 글자", desc: "이벤트 태그 텍스트" },

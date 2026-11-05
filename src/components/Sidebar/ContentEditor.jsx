@@ -1,10 +1,17 @@
 import SidebarSection, { FieldLabel } from "../ui/SidebarSection";
 
+// 메인 타이틀은 한 칸에 줄바꿈으로 쓴다 — 첫 줄이 Regular, 나머지가 Bold 로 그려진다
+// (두께는 TEXT_WEIGHTS 가 정하므로 라벨에 두께를 적지 않는다)
 const FIELDS = [
-  { key: "eventTag", label: "이벤트 태그", placeholder: "EVENT, SALE, NEW...", type: "input" },
-  { key: "titleLead", label: "타이틀 윗줄 (Regular)", placeholder: "컬리와 함께하는", type: "input" },
-  { key: "title", label: "메인 타이틀 (Bold)", placeholder: "9월의 결제 혜택", type: "input" },
-  { key: "subtitle", label: "서브 카피", placeholder: "혜택 설명 문구", type: "textarea" },
+  { key: "eventTag", label: "이벤트 태그 · 브랜드명", placeholder: "EVENT, SALE, NEW...", type: "input" },
+  {
+    key: "title",
+    label: "메인 타이틀 (Enter 로 줄바꿈)",
+    placeholder: "컬리와 함께하는\n9월의 결제 혜택",
+    type: "textarea",
+    rows: 2,
+  },
+  { key: "subtitle", label: "서브 타이틀", placeholder: "혜택 설명 문구", type: "textarea" },
   { key: "discount", label: "할인 정보", placeholder: "UP TO 50% OFF", type: "input" },
   { key: "date", label: "기간", placeholder: "09.01 - 09.07", type: "input" },
   { key: "cta", label: "CTA 문구", placeholder: "지금 바로 가입하고 혜택 받기", type: "input" },
@@ -48,7 +55,7 @@ export default function ContentEditor({ content, onChange, colors = null }) {
               value={content[f.key]}
               onChange={(e) => onChange(f.key, e.target.value)}
               placeholder={f.placeholder}
-              rows={2}
+              rows={f.rows ?? 2}
               style={{ ...inputStyle, height: "auto", padding: "10px 12px", resize: "vertical" }}
             />
           ) : (

@@ -27,8 +27,9 @@
  *   서브카피 42px (0.0679)
  *   기간 38px (0.0614)
  *
- * titleLead(타이틀 윗줄)는 타이틀과 **같은 크기**이고 두께만 가볍다
- * — "컬리와 함께하는(Regular) / 9월의 결제 혜택(Medium)" 구성.
+ * 타이틀은 한 칸에 줄바꿈으로 입력한다. **줄마다 두께를 달리하지 않는다** —
+ * 굵기 대비는 타이틀과 서브 타이틀 사이에서만 준다.
+ * 크기는 가장 긴 줄을 기준으로 잡는다 (SlotRenderer 의 title 케이스).
  */
 export const TYPE_RATIO = {
   eventTag: 0.055,
@@ -252,7 +253,7 @@ export const LAYOUTS = [
  * 폰트 두께 프리셋
  *
  * 컬리 배너는 굵은 헤비 웨이트보다 얇은~중간 두께를 주로 쓴다.
- * titleLead 는 타이틀보다 확실히 가볍게 둔다 (레퍼런스의 Regular / Bold 대비).
+ * 타이틀은 줄 수와 상관없이 한 두께로 그린다 — 대비는 서브 타이틀과의 사이에서 준다.
  */
 export const TEXT_WEIGHTS = [
   {
@@ -261,7 +262,6 @@ export const TEXT_WEIGHTS = [
     desc: "얇은 두께 · 정갈한 톤",
     weights: {
       eventTag: 300,
-      titleLead: 300,
       title: 400,
       subtitle: 300,
       discount: 400,
@@ -275,7 +275,6 @@ export const TEXT_WEIGHTS = [
     desc: "Figma 기준 (Regular + Medium)",
     weights: {
       eventTag: 400,
-      titleLead: 400,
       title: 500,
       subtitle: 400,
       discount: 500,
@@ -289,7 +288,6 @@ export const TEXT_WEIGHTS = [
     desc: "세일·강조용",
     weights: {
       eventTag: 500,
-      titleLead: 500,
       title: 700,
       subtitle: 500,
       discount: 700,
@@ -313,7 +311,7 @@ export const TAG_STYLES = [
 export const MODULE_DEFS = [
   { id: "eventTag", label: "이벤트 태그", defaultOn: false },
   { id: "title", label: "메인 타이틀", defaultOn: true },
-  { id: "subtitle", label: "서브 카피", defaultOn: true },
+  { id: "subtitle", label: "서브 타이틀", defaultOn: true },
   { id: "discount", label: "할인 뱃지", defaultOn: false },
   { id: "date", label: "기간 표시", defaultOn: true },
   { id: "cta", label: "CTA 버튼", defaultOn: true },
@@ -327,9 +325,8 @@ export const DEFAULT_MODULES = MODULE_DEFS.reduce(
 
 export const CONTENT_DEFAULTS = {
   eventTag: "오직 앱에서만 가능한 첫 구매 혜택",
-  // 타이틀은 두 줄 구성 — 윗줄은 Regular, 아랫줄은 Bold
-  titleLead: "컬리와 함께하는",
-  title: "9월의 결제 혜택",
+  // 타이틀은 한 칸에 줄바꿈으로 쓴다 — 첫 줄은 Regular, 나머지는 Bold
+  title: "컬리와 함께하는\n9월의 결제 혜택",
   subtitle: "케이뱅크 이용하고\n최대 21,000원 혜택",
   discount: "최대 50% 할인",
   date: "09.01 - 09.30",
