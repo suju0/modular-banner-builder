@@ -5,7 +5,7 @@
 채널별 배너가 그 자리에서 완성됩니다.
 
 UI 는 원티드 디자인 시스템 **Montage(WDS)** 규격으로 입혔고, 포인트 컬러만
-컬리 퍼플(`#5F0080`)로 교체했습니다.
+브랜드 퍼플(`#5F0080`)로 교체했습니다.
 
 ## 실행
 
@@ -48,13 +48,23 @@ src/
 │   └── ui/              Chip · Toggle · Segmented · ColorField …
 └── styles/
     ├── montage.css      Montage(WDS) 토큰 — 업스트림 거울, 손대지 않는다
-    ├── brand.css        브랜드 교체 레이어 — primary ramp 만 컬리 퍼플로
+    ├── brand.css        브랜드 교체 레이어 — primary ramp 만 재정의
     └── globals.css      앱 별칭(--color-*) 매핑 · 리셋 · 스크롤바
 ```
 
-설계 배경과 지켜야 할 규칙(렌더 계층, 슬롯 좌표, 폰트 임베드 함정,
-Montage 적용 규격)은 [`CLAUDE.md`](./CLAUDE.md) 에 정리되어 있습니다.
-수정하기 전에 먼저 읽어 주세요.
+### 고치기 전에 알아 둘 것
+
+- `BannerRenderer` 는 **항상 배너 원본 픽셀 크기로** 렌더한다. 축소는 `BannerPreview` 가
+  CSS transform 으로만 처리하고, Export 는 프리뷰 DOM 을 캡처하지 않고 화면 밖에서
+  렌더러를 다시 그려 캡처한다
+- 색은 반드시 `resolveTheme(themeId, overrides)` 를 거친다. 테마 값을 직접 참조하면
+  사용자가 지정한 색이 무시된다
+- 슬롯 좌표는 `resolveSlotBox(layout, moduleId, …)` 로만 만든다. 레이아웃에 x/transform 을
+  하드코딩하면 배치·정렬 설정이 무시된다
+- `@font-face` 의 `format()` 은 Export 의 `preferredFontFormat` 과 **정확히 같아야 한다.**
+  다르면 `html-to-image` 가 src 선언을 통째로 지워 결과물이 조용히 폴백 폰트로 렌더된다
+- 회색 면·토글·업로드 박스는 Montage 대신 원본 빌더 값을 쓴다 (`--legacy-*`).
+  의도한 예외이니 "DS 를 안 따랐다"고 되돌리지 말 것
 
 ## 기술 스택
 

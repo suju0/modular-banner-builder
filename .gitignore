@@ -2,3 +2,7 @@ node_modules
 dist
 .env
 .env.local
+
+# 내부 설계 문서 — 로컬에만 둔다 (공개 저장소에서 제외)
+CLAUDE.md
+docs/
