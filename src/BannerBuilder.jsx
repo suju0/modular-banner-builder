@@ -1005,7 +1005,14 @@ export default function BannerBuilder({ onBack }) {
               showTagStyle={Boolean(layoutData.slots.eventTag)}
             />
           )}
-          <ContentEditor content={content} onChange={updateContent} colors={textColorFields} />
+          {/* 타이틀 글자 수 상한은 규격·템플릿에서 재서 정한다 — 둘을 함께 넘긴다 */}
+          <ContentEditor
+            content={content}
+            onChange={updateContent}
+            colors={textColorFields}
+            bannerSize={selectedSize}
+            layout={layoutData}
+          />
           <ImageUploader
             image={image}
             onUpload={handleUpload}

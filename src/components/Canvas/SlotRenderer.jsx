@@ -1,4 +1,7 @@
 import { LETTER_SPACING, LINE_HEIGHT, TYPE_RATIO } from "../../constants/layouts";
+// 타이틀 크기 계산은 lib/titleFit 에 모아 두었다 — 입력칸의 글자 수 상한이
+// 같은 함수를 쓴다. 여기서 따로 계산하면 둘이 조용히 어긋난다.
+import { getTitleSize, getTypeBase } from "../../lib/titleFit";
 
 /**
  * SlotRenderer
@@ -8,24 +11,6 @@ import { LETTER_SPACING, LINE_HEIGHT, TYPE_RATIO } from "../../constants/layouts
  * 주의: 이 컴포넌트는 항상 배너 원본 픽셀 크기(bannerSize) 기준으로 렌더된다.
  * 프리뷰 축소는 상위에서 CSS transform 으로 처리하므로 여기서 배율을 곱하면 안 된다.
  */
-
-/**
- * 타입 스케일 기준값.
- *
- * 높이만 기준으로 삼으면 PC 풀배너(1920×360)처럼 납작한 규격에서 글자가 과도하게
- * 작아진다. 가로 여유도 함께 반영해 비율이 달라도 시각적 크기가 비슷하게 유지된다.
- */
-function getTypeBase({ w, h }) {
-  return Math.min(h, w * 0.55);
-}
-
-/** 텍스트가 길면 타이틀을 줄인다 (레이아웃이 깨지는 것보다 낫다) */
-function getTitleSize(bannerSize, textLength) {
-  const base = getTypeBase(bannerSize) * TYPE_RATIO.title;
-  if (textLength > 20) return base * 0.72;
-  if (textLength > 12) return base * 0.86;
-  return base;
-}
 
 export default function SlotRenderer({
   moduleId,
