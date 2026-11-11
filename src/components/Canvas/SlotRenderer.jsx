@@ -59,14 +59,14 @@ export default function SlotRenderer({
     case "title": {
       // 입력은 한 칸이고 Enter 로 줄을 나눈다. **줄마다 두께를 달리하지 않는다** —
       // 굵기 대비는 타이틀과 서브 타이틀 사이에서만 준다.
-      const lines = (content.title || "").split("\n");
-      // 크기는 가장 긴 "줄" 기준이다 — 전체 길이로 재면 줄바꿈한 타이틀이 과하게 작아진다
-      const longest = Math.max(0, ...lines.map((l) => l.length));
-
+      //
+      // 크기도 글자 수에 따라 변하지 않는다. 길면 줄이던 예전 방식은 한 글자 차이로
+      // 타이틀이 확 작아졌고, 입력칸의 한도 숫자까지 따라 흔들렸다.
+      // 넘치는 입력은 lib/titleFit 이 입력 단계에서 막는다.
       return (
         <div
           style={{
-            fontSize: getTitleSize(bannerSize, longest) * scale,
+            fontSize: getTitleSize(bannerSize) * scale,
             fontWeight: weights.title,
             color: theme.text,
             lineHeight: LINE_HEIGHT.title,

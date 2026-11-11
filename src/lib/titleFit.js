@@ -26,12 +26,16 @@ export function getTypeBase({ w, h }) {
   return Math.min(h, w * 0.55);
 }
 
-/** 텍스트가 길면 타이틀을 줄인다 (레이아웃이 깨지는 것보다 낫다) */
-export function getTitleSize(bannerSize, textLength) {
-  const base = getTypeBase(bannerSize) * TYPE_RATIO.title;
-  if (textLength > 20) return base * 0.72;
-  if (textLength > 12) return base * 0.86;
-  return base;
+/**
+ * 타이틀 크기 — 규격이 정한다. **글자 수에 따라 변하지 않는다.**
+ *
+ * 예전에는 12자·20자에서 86%·72% 로 줄였다. 글자를 더 쓰면 폰트가 작아지고,
+ * 작아지면 더 들어가니 상한이 따라 올라가서 "한도 숫자가 자꾸 바뀌는" 문제가 됐다.
+ * 넘치는 입력은 이제 입력 단계에서 막으므로 줄여서 맞출 이유가 없다.
+ * Figma 원본도 타이틀을 86px 고정으로 쓴다.
+ */
+export function getTitleSize(bannerSize) {
+  return getTypeBase(bannerSize) * TYPE_RATIO.title;
 }
 
 /** 타이틀 블록의 실제 폭(배너 px). layout.block.w 는 "54%" 같은 문자열이다 */
@@ -43,8 +47,6 @@ export function getTitleBlockWidth(bannerSize, layout) {
       : Number(raw) || 1;
   return bannerSize.w * ratio;
 }
-
-const longestLength = (lines) => lines.reduce((max, l) => Math.max(max, l.length), 0);
 
 /**
  * 폭 측정자.
@@ -80,67 +82,66 @@ export function measureTitleWidth(text, fontSizePx, fontWeight = 500) {
 }
 
 /**
- * 그 줄에 들어가는 글자 수 상한.
+ * 한 줄에 쓸 수 있는 글자 수 — **규격·템플릿이 정하는 고정값이다.**
  *
- * 이미 넘쳤으면 들어가는 데까지 잘라 본 길이를, 여유가 있으면 한글을 더 넣어 보며
- * 넘치기 직전까지의 길이를 돌려준다. 상한은 "지금 이 줄 기준"이라 글자를 지우면
- * 다시 늘어난다 — 폰트가 계단식으로 커졌다 작아졌다 하기 때문이다.
+ * 무엇을 입력했는지는 보지 않는다. 입력한 글자로 재면 좁은 글자(영문·공백)를
+ * 쓸 때마다 한도가 늘었다 줄었다 해서 화면의 숫자를 믿을 수 없게 된다.
+ * 그래서 한글에서 가장 넓은 축인 '가' 를 기준으로 한 번만 잰다.
  */
-export function lineCapacity(line, fontSizePx, boxWidth) {
-  if (!boxWidth) return line.length;
+const limitCache = new Map();
 
-  if (measureTitleWidth(line, fontSizePx) > boxWidth) {
-    let lo = 0;
-    let hi = line.length;
-    while (lo < hi) {
-      const mid = Math.ceil((lo + hi) / 2);
-      if (measureTitleWidth(line.slice(0, mid), fontSizePx) <= boxWidth) lo = mid;
-      else hi = mid - 1;
-    }
-    return lo;
-  }
+/** 폰트가 늦게 떠서 다시 재야 할 때 (ContentEditor 가 fonts.ready 에서 부른다) */
+export function resetTitleFitCache() {
+  limitCache.clear();
+}
 
-  let probe = line;
-  let cap = line.length;
+export function lineCharLimit(bannerSize, layout) {
+  const box = getTitleBlockWidth(bannerSize, layout);
+  if (!box) return 1;
+
+  // 한 번 재면 규격·템플릿이 바뀌기 전까지 같은 값이다.
+  // 글자마다 다시 재면 타이핑할 때 DOM 측정이 수십 번씩 돈다.
+  const key = `${bannerSize.w}x${bannerSize.h}@${box}`;
+  const cached = limitCache.get(key);
+  if (cached !== undefined) return cached;
+
+  const fontSize = getTitleSize(bannerSize);
+  let probe = "";
+  let limit = 0;
   // 한 줄이 60자를 넘어갈 규격은 없다 — 측정이 꼬여도 여기서 멈춘다
-  while (cap - line.length < 60) {
+  while (limit < 60) {
     probe += "가";
-    if (measureTitleWidth(probe, fontSizePx) > boxWidth) break;
-    cap += 1;
+    if (measureTitleWidth(probe, fontSize) > box) break;
+    limit += 1;
   }
-  return cap;
+  const result = Math.max(1, limit);
+  limitCache.set(key, result);
+  return result;
 }
 
 /**
- * 입력값을 2줄 · 줄당 폭 안으로 자른다.
+ * 입력값을 2줄 · 줄당 고정 글자 수 안으로 자른다.
  * trimmed 는 실제로 잘렸는지 — 입력이 막혔다는 신호를 보여 줄 때 쓴다.
  */
 export function clampTitle(value, bannerSize, layout) {
-  const text = String(value ?? "");
-  const box = getTitleBlockWidth(bannerSize, layout);
-  const all = text.split("\n");
+  const all = String(value ?? "").split("\n");
+  const limit = lineCharLimit(bannerSize, layout);
 
   let trimmed = all.length > MAX_TITLE_LINES;
-  const lines = all.slice(0, MAX_TITLE_LINES);
-  const fontSize = getTitleSize(bannerSize, longestLength(lines));
-
-  const next = lines.map((line) => {
-    const cap = lineCapacity(line, fontSize, box);
-    if (line.length <= cap) return line;
+  const next = all.slice(0, MAX_TITLE_LINES).map((line) => {
+    if (line.length <= limit) return line;
     trimmed = true;
-    return line.slice(0, cap);
+    return line.slice(0, limit);
   });
 
   return { value: next.join("\n"), trimmed };
 }
 
-/** 줄별 [쓴 글자 수, 상한] — 카운터 표시용 */
+/** 줄별 [쓴 글자 수, 상한] — 카운터 표시용. 상한은 두 줄 모두 같다. */
 export function titleLineCounts(value, bannerSize, layout) {
-  const box = getTitleBlockWidth(bannerSize, layout);
-  const lines = String(value ?? "").split("\n").slice(0, MAX_TITLE_LINES);
-  const fontSize = getTitleSize(bannerSize, longestLength(lines));
-  return lines.map((line) => ({
-    used: line.length,
-    max: lineCapacity(line, fontSize, box),
-  }));
+  const limit = lineCharLimit(bannerSize, layout);
+  return String(value ?? "")
+    .split("\n")
+    .slice(0, MAX_TITLE_LINES)
+    .map((line) => ({ used: line.length, max: limit }));
 }

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import SidebarSection, { FieldLabel } from "../ui/SidebarSection";
-import { MAX_TITLE_LINES, clampTitle, titleLineCounts } from "../../lib/titleFit";
+import { MAX_TITLE_LINES, clampTitle, resetTitleFitCache, titleLineCounts } from "../../lib/titleFit";
 
 // 메인 타이틀은 한 칸에 줄바꿈으로 쓴다 (2줄까지).
 // 줄당 글자 수는 고정이 아니라 지금 고른 규격·템플릿에서 재서 정한다 — lib/titleFit.
@@ -50,11 +50,15 @@ const labelStyle = {
  * 한도에 닿았다는 걸 숫자로만 보여 준다.
  */
 function TitleField({ value, onChange, placeholder, bannerSize, layout }) {
-  // 폰트가 늦게 뜨면 폭 측정이 틀어진다. 로드가 끝나면 상태를 건드려 한 번 다시 센다.
+  // 폰트가 늦게 뜨면 폭 측정이 틀어진다. 로드가 끝나면 캐시를 비우고 한 번 다시 센다.
   const [, setFontTick] = useState(0);
   useEffect(() => {
     let alive = true;
-    document.fonts?.ready.then(() => alive && setFontTick((n) => n + 1));
+    document.fonts?.ready.then(() => {
+      if (!alive) return;
+      resetTitleFitCache();
+      setFontTick((n) => n + 1);
+    });
     return () => {
       alive = false;
     };
