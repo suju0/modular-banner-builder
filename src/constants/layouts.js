@@ -204,7 +204,10 @@ export const LAYOUTS = [
     recommendedSize: "app-hero",
     frame: { radius: "none" },
     indicator: "bottom",
-    block: { w: "54%", position: "left", align: "left" },
+    // 블록 폭 = 캔버스 − 좌우 여백 6% × 2 = 88% (990px).
+    // 이미지 그래픽이 아래쪽으로 들어가는 시안도 있어서 텍스트 폭을 제한하지 않는다.
+    // 좌측 여백(67.5px)과 우측 여백을 같게 잡았을 때 타이틀은 한 줄 최대 14자.
+    block: { w: "88%", position: "left", align: "left" },
     // Figma 원본(1125×840) 잉크 위치에서 라인박스 top 을 역산한 값
     //   타이틀 윗줄 잉크 89.5px → 라인박스 74px = 8.8% (Export 실측으로 5px 보정)
     //   굵은 줄 잉크 190px (윗줄 + 86×1.17)
