@@ -184,7 +184,9 @@ export const LAYOUTS = [
     recommendedSize: "app-modal",
     frame: { radius: "all" },
     cta: { style: "bar" },
-    block: { w: "86%", position: "center", align: "center" },
+    // 블록 폭 88% = 캔버스 − 좌우 여백 6% × 2 (950px). 타이틀은 한 줄 최대 14자.
+    // (87%는 939.6px라 14자(940.9px)가 들어가지 않는다)
+    block: { w: "88%", position: "center", align: "center" },
     // 실측: 아이브로우 8%, 타이틀 블록 13%, 서브카피 32%, 하단 CTA 바가 10% 차지
     slots: {
       eventTag: { y: "8%" },
